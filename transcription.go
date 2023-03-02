@@ -9,6 +9,8 @@ import (
 )
 
 const (
+	TranscriptionModelWhisper1 = "whisper-1"
+
 	ResponseFormatJSON        = "json"
 	ResponseFormatText        = "text"
 	ResponseFormatSRT         = "srt"
@@ -18,7 +20,7 @@ const (
 
 // Transcription returns a Transcription of an image. Convenience methods exist on
 // images already returned from Client calls to easily vary those images.
-func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*ImageRes, error) {
+func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*TranscriptionRes, error) {
 	body := &bytes.Buffer{}
 	w := multipart.NewWriter(body)
 	image, err := w.CreateFormFile("file", "file.mp3")
@@ -63,7 +65,7 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*Imag
 	}
 	w.Close()
 
-	var res ImageRes
+	var res TranscriptionRes
 	err = c.c.R().
 		Post("audio/transcriptions").
 		SetHeader("Content-Type", "multipart/form-data; boundary="+w.Boundary()).
@@ -72,9 +74,6 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*Imag
 		JSON(&res)
 	if err != nil {
 		return nil, err
-	}
-	for i := range res.Data {
-		res.Data[i].c = &c
 	}
 	return &res, nil
 }

@@ -23,8 +23,9 @@ For the best current go examples, see the [CLI files](cmd/openai/cmd).
 Current support:
 
 - [x] Chat
-- [x] Completion (code, text, 
+- [x] Completion (code, text, etc)
 - [x] Edit
 - [x] Images
 - [x] Image variations
+- [x] Audio transcription
 - [ ] More soon
