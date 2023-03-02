@@ -6,6 +6,7 @@ require (
 	git.stuart.fun/andrew/rester/v2 v2.1.2
 	github.com/andrewstuart/p v1.0.0
 	github.com/gopuff/morecontext v0.4.1
+	github.com/spf13/cobra v1.6.1
 )
 
 require (
@@ -17,6 +18,7 @@ require (
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/improbable-eng/go-httpwares v0.0.0-20190118142334-33c6690a604c // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.1 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
@@ -26,6 +28,7 @@ require (
 	github.com/prometheus/common v0.10.0 // indirect
 	github.com/prometheus/procfs v0.1.3 // indirect
 	github.com/sirupsen/logrus v1.4.2 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/net v0.0.0-20200904194848-62affa334b73 // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	golang.org/x/text v0.3.0 // indirect
