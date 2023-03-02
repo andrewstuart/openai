@@ -39,6 +39,7 @@ func init() {
 	if err == nil {
 		viper.AddConfigPath(path.Join(u, ".config"))
 	}
+	viper.SetConfigName("openai")
 	viper.AutomaticEnv()
 	viper.EnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.ReadInConfig()
