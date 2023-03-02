@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	git.stuart.fun/andrew/rester/v2 v2.1.2
+	github.com/davecgh/go-spew v1.1.1
 	github.com/gopuff/morecontext v0.4.1
 )
 

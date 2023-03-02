@@ -2,6 +2,15 @@ package main
 
 import "context"
 
+func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
+	var res ChatRes
+	err := c.c.R().Post("chat/completions").JSON(r).Do(ctx).JSON(&res)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
 type ChatSession struct {
 	c        *Client
 	Messages []ChatMessage
@@ -23,7 +32,7 @@ func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) 
 		Content: msg,
 	})
 
-	res, err := s.c.Complete(ctx, ChatReq{
+	res, err := s.c.ChatComplete(ctx, ChatReq{
 		Model:    "gpt-3.5-turbo",
 		Messages: s.Messages,
 	})
