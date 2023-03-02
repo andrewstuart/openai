@@ -5,7 +5,8 @@ tooling that interacts with OpenAI and other Go code in fun, novel ways. There
 is also a generic fun cli in `cmd/openai` that exposes library code to the CLI
 as well as providing some usage examples for the library.
 
-[Docs](https://pkg.go.dev/github.com/andrewstuart/openai)
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/andrewstuart/openai.svg)](https://pkg.go.dev/github.com/andrewstuart/openai)()
 
 ```bash
 go install github.com/andrewstuart/openai/cmd/openai@latest

@@ -2,6 +2,11 @@ package openai
 
 import "context"
 
+const (
+	EditModelDavinci1     = "text-davinci-edit-001"
+	EditModelDavinciCode1 = "code-davinci-edit-001"
+)
+
 // Edit calls the openai edits endpoint with the given input.
 // https://platform.openai.com/docs/api-reference/edits
 func (c *Client) Edit(ctx context.Context, r EditReq) (*EditRes, error) {
