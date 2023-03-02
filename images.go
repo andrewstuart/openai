@@ -20,6 +20,9 @@ func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, err
 	if err != nil {
 		return nil, err
 	}
+	for i := range res.Data {
+		res.Data[i].c = c
+	}
 	return &res, nil
 }
 
@@ -42,6 +45,7 @@ type ImageRes struct {
 // either a URL to the image generated, or the bytes as `.Image` if the input
 // specified `b64_json` as the ResponseFormat.
 type Images struct {
+	c     *Client
 	URL   string `json:"url"`
 	Image []byte `json:"b64_json"`
 }

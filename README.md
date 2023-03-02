@@ -19,3 +19,12 @@ openai chat --prompt "You answer in the style of a super chill surfer from south
 ```
 
 For the best current go examples, see the [CLI files](cmd/openai/cmd). 
+
+Current support:
+
+- [x] Chat
+- [x] Completion (code, text, 
+- [x] Edit
+- [x] Images
+- [x] Image variations
+- [x] kjl

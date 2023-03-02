@@ -4,11 +4,12 @@ import "context"
 
 // Well-known completion models
 const (
-	CompletionModelDavinci3 = "text-davinci-003"
-	CompletionModelDavinci2 = "text-davinci-002"
-	CompletionModelCurie1   = "text-curie-001"
-	CompletionModelBabbage1 = "text-babbage-001"
-	CompletionModelAda1     = "text-ada-001"
+	CompletionModelDavinci3     = "text-davinci-003"
+	CompletionModelDavinci2     = "text-davinci-002"
+	CompletionModelCurie1       = "text-curie-001"
+	CompletionModelBabbage1     = "text-babbage-001"
+	CompletionModelAda1         = "text-ada-001"
+	CompletionModelCodeDavinci2 = "code-davinci-002"
 )
 
 // Complete calls the non-chat Completion endpoints for non-chatgpt completion

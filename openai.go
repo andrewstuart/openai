@@ -16,7 +16,7 @@ type Client struct {
 func NewClient(tok string) (*Client, error) {
 	c := rester.Must(rester.New("https://api.openai.com/v1"))
 	c.Transport = rester.All{
-		rester.MergeHeaders{
+		rester.DefaultHeaders{
 			"Authorization": {"Bearer " + tok},
 			"Content-Type":  {"application/json"},
 		},
