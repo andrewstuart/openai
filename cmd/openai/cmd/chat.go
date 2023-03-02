@@ -11,21 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/andrewstuart/openai"
-	"github.com/gopuff/morecontext"
 	"github.com/spf13/cobra"
 )
-
-var c *openai.Client
-var ctx = morecontext.ForSignals()
-
-func init() {
-	var err error
-	c, err = openai.NewClient(os.Getenv("TOKEN"))
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 // chatCmd represents the chat command
 var chatCmd = &cobra.Command{
