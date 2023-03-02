@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -14,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// completionCmd represents the completion command
-var completionCmd = &cobra.Command{
-	Use:   "completion",
+// completeCmd represents the complete command
+var completeCmd = &cobra.Command{
+	Use:   "complete",
 	Short: "Get completion text from OpenAI",
 	Run: func(cmd *cobra.Command, args []string) {
 		model, _ := cmd.Flags().GetString("model")
@@ -24,7 +21,7 @@ var completionCmd = &cobra.Command{
 		t, _ := cmd.Flags().GetInt("tokens")
 		f, _ := cmd.Flags().GetString("file")
 
-		// Read a completion line from either stdin or an entire file from `--file/-f`.
+		// Read a complete line from either stdin or an entire file from `--file/-f`.
 		var comp string
 		if f != "" {
 			bs, err := ioutil.ReadFile(f)
@@ -62,9 +59,9 @@ var completionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(completionCmd)
-	completionCmd.Flags().StringP("model", "m", openai.CompletionModelDavinci3, "Which completion model to use")
-	completionCmd.Flags().IntP("number", "n", 1, "How many completions to generate")
-	completionCmd.Flags().IntP("tokens", "t", 64, "How many completions to generate")
-	completionCmd.Flags().StringP("file", "f", "", "Optional file to load")
+	rootCmd.AddCommand(completeCmd)
+	completeCmd.Flags().StringP("model", "m", openai.CompletionModelDavinci3, "Which completion model to use")
+	completeCmd.Flags().IntP("number", "n", 1, "How many completions to generate")
+	completeCmd.Flags().IntP("tokens", "t", 64, "How many completions to generate")
+	completeCmd.Flags().StringP("file", "f", "", "Opteal file to load")
 }
