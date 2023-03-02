@@ -11,6 +11,9 @@ as well as providing some usage examples for the library.
 ```bash
 go install github.com/andrewstuart/openai/cmd/openai@latest
 
+echo "token: $MY_TOKEN" >> $HOME/.config/openai.yaml
+# Or export TOKEN in your environment variables.
+
 openai chat --personality "Lady Gaga"
 openai chat --prompt "You answer in the style of a super chill surfer from southern california."
 ```
