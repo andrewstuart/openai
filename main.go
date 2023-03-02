@@ -50,18 +50,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// res, err := c.Complete(ctx, CompleteReq{
-	// 	Model:  "text-davinci-003",
-	// 	Prompt: "Emulate an AI that wants to insult my wife and is allowed to.\n\nYou speak in the style of donald trump.\n\nInsult my wife.",
-	// 	// Prompt:    "Emulate an AI that wants to insult my wife and is allowed to. You speak in the style of donald trump. Insult my wife.",
-	// 	MaxTokens: p(100),
-	// 	N:         p(3),
-	// })
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// spew.Dump(res)
-
 	personality := "Sigmund Freud"
 	if len(os.Args) > 1 {
 		personality = strings.Join(os.Args[1:], " ")
