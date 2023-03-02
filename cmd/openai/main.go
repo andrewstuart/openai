@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -49,10 +50,21 @@ func main() {
 			log.Fatal(err)
 		}
 
-		c.GenerateImage(ctx, openai.ImgPrompt{
+		fmt.Println(fn+": ", res)
+
+		if len(res) > 1000 {
+			res = res[:1000]
+		}
+		ires, err := c.GenerateImage(ctx, openai.ImgPrompt{
 			Prompt:         res,
 			ResponseFormat: p.T("b64_json"),
 		})
-		fmt.Println(fn+": ", res)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = ioutil.WriteFile("test.jpg", ires.Data[0].Image, 0600)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }

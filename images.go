@@ -21,10 +21,10 @@ type ImgPrompt struct {
 
 type ImageRes struct {
 	Created int             `json:"created"`
-	Dataa   []ImageResDatum `json:"data"`
+	Data    []ImageResDatum `json:"data"`
 }
 
 type ImageResDatum struct {
-	URL     string `json:"url"`
-	B64JSON string `json:"b64_json"`
+	URL   string `json:"url"`
+	Image []byte `json:"b64_json"`
 }
