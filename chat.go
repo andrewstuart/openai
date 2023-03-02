@@ -2,6 +2,13 @@ package openai
 
 import "context"
 
+// Well-known Chat constants
+const (
+	ChatRoleSystem      = "system"
+	ChatRoleUser        = "user"
+	ChatModelGPT35Turbo = "gpt-3.5-turbo"
+)
+
 // ChatComplete is the raw chat/completions endpoint exposed for callers.
 func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
 	var res ChatRes
@@ -26,7 +33,7 @@ func (c *Client) NewChatSession(prompt string) ChatSession {
 	return ChatSession{
 		c: c,
 		Messages: []ChatMessage{{
-			Role:    "system",
+			Role:    ChatRoleSystem,
 			Content: prompt,
 		}},
 	}
@@ -36,12 +43,12 @@ func (c *Client) NewChatSession(prompt string) ChatSession {
 // Session context, to the OpenAI endpoints for completion.
 func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) {
 	s.Messages = append(s.Messages, ChatMessage{
-		Role:    "user",
+		Role:    ChatRoleUser,
 		Content: msg,
 	})
 
 	res, err := s.c.ChatComplete(ctx, ChatReq{
-		Model:    "gpt-3.5-turbo",
+		Model:    ChatModelGPT35Turbo,
 		Messages: s.Messages,
 	})
 	if err != nil {

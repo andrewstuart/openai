@@ -2,6 +2,15 @@ package openai
 
 import "context"
 
+// Well-known completion models
+const (
+	CompletionModelDavinci3 = "text-davinci-003"
+	CompletionModelDavinci2 = "text-davinci-002"
+	CompletionModelCurie1   = "text-curie-001"
+	CompletionModelBabbage1 = "text-babbage-001"
+	CompletionModelAda1     = "text-ada-001"
+)
+
 // Complete calls the non-chat Completion endpoints for non-chatgpt completion
 // models.
 func (c Client) Complete(ctx context.Context, req CompleteReq) (*CompleteRes, error) {
@@ -45,8 +54,8 @@ type CompleteRes struct {
 // CompleteChoice is the representation of the individual choices returned by
 // OpenAI.
 type CompleteChoice struct {
-	Text         string
-	Index        int
-	LogProbs     any
-	FinishReason string
+	Text         string `json:"text"`
+	Index        int    `json:"index"`
+	LogProbs     any    `json:"log_probs"`
+	FinishReason string `json:"finish_reason"`
 }

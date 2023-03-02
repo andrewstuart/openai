@@ -2,9 +2,14 @@ package openai
 
 import "context"
 
+// Well-known responseformats
 const (
-	ResponseFormatURL     = "url"
-	ResponseFormatB64JSON = "b64_json"
+	ImageResponseFormatURL     = "url"
+	ImageResponseFormatB64JSON = "b64_json"
+
+	ImageSize256  = "256x256"
+	ImageSize512  = "512x512"
+	ImageSize1024 = "1024x1024"
 )
 
 // GenerateImage calls the images/generations API and returns the API response
