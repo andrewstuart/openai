@@ -14,7 +14,4 @@ openai chat --personality "Lady Gaga"
 openai chat --prompt "You answer in the style of a super chill surfer from southern california."
 ```
 
-```go
-cli := openai.NewClient(token)
-
-cli.NewC
+For the best current go examples, see the [CLI files](cmd/openai/cmd). 
