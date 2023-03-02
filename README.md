@@ -27,4 +27,4 @@ Current support:
 - [x] Edit
 - [x] Images
 - [x] Image variations
-- [x] kjl
+- [ ] More soon
