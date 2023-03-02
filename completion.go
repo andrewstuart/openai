@@ -29,10 +29,6 @@ type CompleteReq struct {
 	User              *string         `json:"user,omitempty"`
 }
 
-func p[T any](t T) *T {
-	return &t
-}
-
 type CompleteRes struct {
 	Choices []CompleteChoice `json:"choices"`
 	Created int              `json:"created"`

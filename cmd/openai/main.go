@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/andrewstuart/openai"
+	"github.com/andrewstuart/p"
 	"github.com/gopuff/morecontext"
 )
 
@@ -47,6 +48,11 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		c.GenerateImage(ctx, openai.ImgPrompt{
+			Prompt:         res,
+			ResponseFormat: p.T("b64_json"),
+		})
 		fmt.Println(fn+": ", res)
 	}
 }
