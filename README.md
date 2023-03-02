@@ -5,6 +5,10 @@ tooling that interacts with OpenAI and other Go code in fun, novel ways. There
 is also a generic fun cli in `cmd/openai` that exposes library code to the CLI
 as well as providing some usage examples for the library.
 
+If you need a token, head over to https://platform.openai.com/account/api-keys,
+and sign up if you need to. If you haven't signed up already, you usually get
+$20ish in credit, which should get you pretty far.
+
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/andrewstuart/openai.svg)](https://pkg.go.dev/github.com/andrewstuart/openai)
 
@@ -13,6 +17,7 @@ go install github.com/andrewstuart/openai/cmd/openai@latest
 
 echo "token: $MY_TOKEN" >> $HOME/.config/openai.yaml
 # Or export TOKEN in your environment variables.
+# add org: <your org id> if you are a member of multiple organizations.
 
 openai chat --personality "Lady Gaga"
 openai chat --prompt "You answer in the style of a super chill surfer from southern california."

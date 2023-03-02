@@ -41,7 +41,7 @@ func init() {
 	viper.EnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.ReadInConfig()
 
-	c, err = openai.NewClient(viper.GetString("token"))
+	c, err = openai.NewClient(viper.GetString("token"), openai.WithOrg(viper.GetString("org")))
 	if err != nil {
 		log.Fatal(err)
 	}

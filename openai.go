@@ -12,14 +12,37 @@ type Client struct {
 	c *rester.Client
 }
 
+type optStruct struct {
+	Org string
+}
+
+type Opt func(*optStruct)
+
+func WithOrg(o string) Opt {
+	return func(opt *optStruct) {
+		opt.Org = o
+	}
+}
+
 // NewClient returns an OpenAI base client with the token.
-func NewClient(tok string) (*Client, error) {
+func NewClient(tok string, opts ...Opt) (*Client, error) {
+	var os optStruct
+	for _, o := range opts {
+		o(&os)
+	}
+
+	dh := rester.DefaultHeaders{
+		"Authorization": {"Bearer " + tok},
+		"Content-Type":  {"application/json"},
+	}
+
+	if os.Org != "" {
+		dh["OpenAI-Organization"] = []string{os.Org}
+	}
+
 	c := rester.Must(rester.New("https://api.openai.com/v1"))
 	c.Transport = rester.All{
-		rester.DefaultHeaders{
-			"Authorization": {"Bearer " + tok},
-			"Content-Type":  {"application/json"},
-		},
+		dh,
 		rester.ResponseFunc(parseOpenAIError),
 	}.Wrap(http.DefaultTransport)
 	return &Client{c: c}, nil
