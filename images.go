@@ -2,6 +2,8 @@ package openai
 
 import "context"
 
+// GenerateImage calls the images/generations API and returns the API response
+// or any error.
 func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, error) {
 	var res ImageRes
 	err := c.c.R().Post("images/generations").JSON(p).Do(ctx).JSON(&res)
