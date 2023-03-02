@@ -2,6 +2,11 @@ package openai
 
 import "context"
 
+const (
+	ResponseFormatURL     = "url"
+	ResponseFormatB64JSON = "b64_json"
+)
+
 // GenerateImage calls the images/generations API and returns the API response
 // or any error.
 func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, error) {
@@ -13,6 +18,7 @@ func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, err
 	return &res, nil
 }
 
+// ImgPrompt is the input type for image generation.
 type ImgPrompt struct {
 	Prompt         string  `json:"prompt,omitempty"`
 	N              *int    `json:"n,omitempty"`
@@ -21,12 +27,16 @@ type ImgPrompt struct {
 	User           *string `json:"user,omitempty"`
 }
 
+// ImageRes is returned by the Image generation.
 type ImageRes struct {
-	Created int             `json:"created"`
-	Data    []ImageResDatum `json:"data"`
+	Created int      `json:"created"`
+	Data    []Images `json:"data"`
 }
 
-type ImageResDatum struct {
+// Images are returned as apart of the Image generation calls, and will contain
+// either a URL to the image generated, or the bytes as `.Image` if the input
+// specified `b64_json` as the ResponseFormat.
+type Images struct {
 	URL   string `json:"url"`
 	Image []byte `json:"b64_json"`
 }

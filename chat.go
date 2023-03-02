@@ -2,6 +2,7 @@ package openai
 
 import "context"
 
+// ChatComplete is the raw chat/completions endpoint exposed for callers.
 func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
 	var res ChatRes
 	err := c.c.R().Post("chat/completions").JSON(r).Do(ctx).JSON(&res)
@@ -11,11 +12,16 @@ func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
 	return &res, nil
 }
 
+// ChatSession is an abstraction that provides simple tracking of ChatMessages
+// and sends the entire chat "session" to the OpenAI APIs for proper contextual
+// chat.
 type ChatSession struct {
 	c        *Client
 	Messages []ChatMessage
 }
 
+// NewChatSession returns a ChatSession object with the given prompt as a
+// starting point (with the `system` role).
 func (c *Client) NewChatSession(prompt string) ChatSession {
 	return ChatSession{
 		c: c,
@@ -26,6 +32,8 @@ func (c *Client) NewChatSession(prompt string) ChatSession {
 	}
 }
 
+// Complete takes a message from the `user` and sends that, along with the
+// Session context, to the OpenAI endpoints for completion.
 func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) {
 	s.Messages = append(s.Messages, ChatMessage{
 		Role:    "user",
@@ -44,33 +52,31 @@ func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) 
 	return res.Choices[0].Message.Content, nil
 }
 
+// ChatReq is a Request to the chat/completions endpoints.
 type ChatReq struct {
 	Model    string        `json:"model"`
 	Messages []ChatMessage `json:"messages"`
 }
 
+// ChatMessage is the structure of the messages array in the request body.
 type ChatMessage struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
+// ChatRes represents the return response from OpenAI chat/completions
 type ChatRes struct {
-	Choices []Choice `json:"choices"`
-	Created int      `json:"created"`
-	ID      string   `json:"id"`
-	Model   string   `json:"model"`
-	Object  string   `json:"object"`
-	Usage   Usage    `json:"usage"`
+	Choices []ChatChoice `json:"choices"`
+	Created int          `json:"created"`
+	ID      string       `json:"id"`
+	Model   string       `json:"model"`
+	Object  string       `json:"object"`
+	Usage   Usage        `json:"usage"`
 }
 
-type Choice struct {
+// ChatChoice is one of the outputs from chatgpt (and sometimes others)
+type ChatChoice struct {
 	FinishReason string      `json:"finish_reason"`
 	Index        int         `json:"index"`
 	Message      ChatMessage `json:"message"`
-}
-
-type Usage struct {
-	CompletionTokens int `json:"completion_tokens"`
-	PromptTokens     int `json:"prompt_tokens"`
-	TotalTokens      int `json:"total_tokens"`
 }

@@ -2,6 +2,8 @@ package openai
 
 import "context"
 
+// Edit calls the openai edits endpoint with the given input.
+// https://platform.openai.com/docs/api-reference/edits
 func (c *Client) Edit(ctx context.Context, r EditReq) (*EditRes, error) {
 	var res EditRes
 	err := c.c.R().Post("edits").JSON(r).Do(ctx).JSON(&res)
@@ -11,6 +13,7 @@ func (c *Client) Edit(ctx context.Context, r EditReq) (*EditRes, error) {
 	return &res, nil
 }
 
+// EditReq represents an edit on the OpenAI APIs.
 type EditReq struct {
 	Model       string   `json:"model,omitempty"`
 	Input       *string  `json:"input,omitempty"`
@@ -20,6 +23,7 @@ type EditReq struct {
 	TopP        *float64 `json:"top_p,omitempty"`
 }
 
+// EditRes contains the results from the edit invocation.
 type EditRes struct {
 	Object  string     `json:"object"`
 	Created int        `json:"created"`
@@ -27,6 +31,7 @@ type EditRes struct {
 	Usage   Usage      `json:"usage"`
 }
 
+// EditData holds the specific Choices returned by OpenAI.
 type EditData struct {
 	Text  string `json:"text"`
 	Index int    `json:"index"`

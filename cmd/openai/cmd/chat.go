@@ -23,7 +23,7 @@ var chatCmd = &cobra.Command{
 		fn := strings.Fields(personality)[0]
 
 		prompt := "You answer in the speaking style of " + personality + "."
-		if pr, err := cmd.Flags().GetString("prompt"); err == nil {
+		if pr, _ := cmd.Flags().GetString("prompt"); pr != "" {
 			prompt = pr
 			fn = "Response"
 		}
@@ -51,7 +51,7 @@ var chatCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 
-			fmt.Println(fn+": ", res)
+			fmt.Println(fn+":", strings.TrimSpace(res))
 
 		}
 	},

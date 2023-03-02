@@ -2,6 +2,8 @@ package openai
 
 import "context"
 
+// Complete calls the non-chat Completion endpoints for non-chatgpt completion
+// models.
 func (c Client) Complete(ctx context.Context, req CompleteReq) (*CompleteRes, error) {
 	var res CompleteRes
 	err := c.c.R().Post("completions").JSON(req).Do(ctx).JSON(&res)
@@ -11,6 +13,7 @@ func (c Client) Complete(ctx context.Context, req CompleteReq) (*CompleteRes, er
 	return &res, nil
 }
 
+// CompleteReq holds all the inputs for a completion request.
 type CompleteReq struct {
 	Model             string          `json:"model"`
 	Prompt            string          `json:"prompt"`
@@ -29,6 +32,7 @@ type CompleteReq struct {
 	User              *string         `json:"user,omitempty"`
 }
 
+// CompleteRes represents the final completion(s) from OpenAI.
 type CompleteRes struct {
 	Choices []CompleteChoice `json:"choices"`
 	Created int              `json:"created"`
@@ -38,6 +42,8 @@ type CompleteRes struct {
 	Usage   Usage            `json:"usage"`
 }
 
+// CompleteChoice is the representation of the individual choices returned by
+// OpenAI.
 type CompleteChoice struct {
 	Text         string
 	Index        int
