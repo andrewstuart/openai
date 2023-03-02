@@ -11,7 +11,6 @@ import (
 // Variation returns a Variation of an image. Convenience methods exist on
 // images already returned from Client calls to easily vary those images.
 func (c Client) Variation(ctx context.Context, v VariationParams) (*ImageRes, error) {
-	var res ImageRes
 	body := &bytes.Buffer{}
 	w := multipart.NewWriter(body)
 	image, err := w.CreateFormFile("image", "image.png")
@@ -50,6 +49,7 @@ func (c Client) Variation(ctx context.Context, v VariationParams) (*ImageRes, er
 	}
 	w.Close()
 
+	var res ImageRes
 	err = c.c.R().
 		Post("images/variations").
 		SetHeader("Content-Type", "multipart/form-data; boundary="+w.Boundary()).
