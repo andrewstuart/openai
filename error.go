@@ -19,7 +19,7 @@ type APIError struct {
 
 // Error implements error
 func (c *APIError) Error() string {
-	return fmt.Sprintf("openai error %s: %s", c.Data.Type, c.Data.Message)
+	return fmt.Sprintf("openai remote error: %s: %s", c.Data.Type, c.Data.Message)
 }
 
 // Parse the error as a roundtripper requestfunc and return the APIError if one
