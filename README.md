@@ -21,6 +21,9 @@ echo "token: $MY_TOKEN" >> $HOME/.config/openai.yaml
 
 openai chat --personality "Lady Gaga"
 openai chat --prompt "You answer in the style of a super chill surfer from southern california."
+openai image "Marvin the Paranoid Android giving a speech." -f marvin.jpg
+openai variations -n 5 marvin-001.jpg
+openai complete 'A description of a painting of a perfect day' | openai image -f self.jpg -
 ```
 
 For the best current go examples, see the [CLI files](cmd/openai/cmd). 

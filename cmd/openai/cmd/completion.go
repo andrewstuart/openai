@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/andrewstuart/openai"
 	"github.com/spf13/cobra"
@@ -20,7 +21,6 @@ var completeCmd = &cobra.Command{
 		n, _ := cmd.Flags().GetInt("number")
 		t, _ := cmd.Flags().GetInt("tokens")
 		f, _ := cmd.Flags().GetString("file")
-
 		// Read a complete line from either stdin or an entire file from `--file/-f`.
 		var comp string
 		if f != "" {
@@ -29,12 +29,14 @@ var completeCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 			comp = string(bs)
-		} else {
+		} else if len(args) == 0 {
 			inLine, err := bufio.NewReader(os.Stdin).ReadString('\n')
 			if err != nil {
 				log.Fatal(err)
 			}
 			comp = inLine
+		} else {
+			comp = strings.Join(args, " ")
 		}
 
 		res, err := c.Complete(ctx, openai.CompleteReq{

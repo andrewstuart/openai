@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"strings"
 
@@ -18,6 +20,13 @@ var imageCmd = &cobra.Command{
 	Short: "Generate an image with prompts",
 	Run: func(cmd *cobra.Command, args []string) {
 		res := strings.Join(args, " ")
+		if len(args) == 0 || args[0] == "-" {
+			bs, err := io.ReadAll(os.Stdin)
+			if err != nil {
+				log.Fatal(err)
+			}
+			res = string(bs)
+		}
 		if len(res) > 1000 {
 			res = res[:1000]
 		}
