@@ -14,7 +14,7 @@ const (
 
 // GenerateImage calls the images/generations API and returns the API response
 // or any error.
-func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, error) {
+func (c *Client) GenerateImage(ctx context.Context, p ImgReq) (*ImageRes, error) {
 	var res ImageRes
 	err := c.c.R().Post("images/generations").JSON(p).Do(ctx).JSON(&res)
 	if err != nil {
@@ -26,8 +26,8 @@ func (c *Client) GenerateImage(ctx context.Context, p ImgPrompt) (*ImageRes, err
 	return &res, nil
 }
 
-// ImgPrompt is the input type for image generation.
-type ImgPrompt struct {
+// ImgReq is the input type for image generation.
+type ImgReq struct {
 	Prompt         string  `json:"prompt,omitempty"`
 	N              *int    `json:"n,omitempty"`
 	Size           *string `json:"size,omitempty"`

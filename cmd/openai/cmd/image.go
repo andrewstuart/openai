@@ -31,7 +31,7 @@ var imageCmd = &cobra.Command{
 			res = res[:1000]
 		}
 		n, _ := cmd.Flags().GetInt("number")
-		ires, err := c.GenerateImage(ctx, openai.ImgPrompt{
+		ires, err := c.GenerateImage(ctx, openai.ImgReq{
 			Prompt:         res,
 			ResponseFormat: p.T("b64_json"),
 			N:              p.T(n),
