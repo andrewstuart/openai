@@ -11,6 +11,8 @@ $20ish in credit, which should get you pretty far.
 
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/andrewstuart/openai.svg)](https://pkg.go.dev/github.com/andrewstuart/openai)
+![Go](https://github.com/andrewstuart/openai/actions/workflows/go.yml/badge.svg)
+
 
 You may also notice that there are plenty of pointers for optional fields in
 Request structs, but none of the common helper funcs to return pointers. I
