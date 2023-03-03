@@ -5,6 +5,7 @@ import "context"
 // Well-known Chat constants
 const (
 	ChatRoleSystem          = "system"
+	ChatRoleAssistant       = "assistant"
 	ChatRoleUser            = "user"
 	ChatModelGPT35Turbo     = "gpt-3.5-turbo"
 	ChatModelGPT35Turbo0301 = "gpt-3.5-turbo-0301"
