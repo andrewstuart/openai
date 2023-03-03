@@ -4,9 +4,10 @@ import "context"
 
 // Well-known Chat constants
 const (
-	ChatRoleSystem      = "system"
-	ChatRoleUser        = "user"
-	ChatModelGPT35Turbo = "gpt-3.5-turbo"
+	ChatRoleSystem          = "system"
+	ChatRoleUser            = "user"
+	ChatModelGPT35Turbo     = "gpt-3.5-turbo"
+	ChatModelGPT35Turbo0301 = "gpt-3.5-turbo-0301"
 )
 
 // ChatComplete is the raw chat/completions endpoint exposed for callers.
@@ -25,13 +26,15 @@ func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
 type ChatSession struct {
 	c        *Client
 	Messages []ChatMessage
+	Model    string
 }
 
 // NewChatSession returns a ChatSession object with the given prompt as a
 // starting point (with the `system` role).
 func (c *Client) NewChatSession(prompt string) ChatSession {
 	return ChatSession{
-		c: c,
+		c:     c,
+		Model: ChatModelGPT35Turbo,
 		Messages: []ChatMessage{{
 			Role:    ChatRoleSystem,
 			Content: prompt,
@@ -48,7 +51,7 @@ func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) 
 	})
 
 	res, err := s.c.ChatComplete(ctx, ChatReq{
-		Model:    ChatModelGPT35Turbo,
+		Model:    s.Model,
 		Messages: s.Messages,
 	})
 	if err != nil {
