@@ -18,7 +18,7 @@ You may also notice that there are plenty of pointers for optional fields in
 Request structs, but none of the common helper funcs to return pointers. I
 created one module to rule them all (there may be others, but it's 3 lines and I
 honestly didn't want to spend the time looking). I suggest
-[github.com/andrewstuart/p](github.com/andrewstuart/p) for your "pointer to anything, even a literal or
+[github.com/andrewstuart/p](https://github.com/andrewstuart/p) for your "pointer to anything, even a literal or
 const" needs.
 
 ```bash
