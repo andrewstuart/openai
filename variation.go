@@ -10,7 +10,7 @@ import (
 
 // Variation returns a Variation of an image. Convenience methods exist on
 // images already returned from Client calls to easily vary those images.
-func (c Client) Variation(ctx context.Context, v VariationParams) (*ImageRes, error) {
+func (c Client) Variation(ctx context.Context, v VariationReq) (*ImageRes, error) {
 	body := &bytes.Buffer{}
 	w := multipart.NewWriter(body)
 	image, err := w.CreateFormFile("image", "image.png")
@@ -66,13 +66,13 @@ func (c Client) Variation(ctx context.Context, v VariationParams) (*ImageRes, er
 }
 
 // Create a variation on an image already returned.
-func (i Images) Variation(ctx context.Context, v VariationParams) (*ImageRes, error) {
+func (i Images) Variation(ctx context.Context, v VariationReq) (*ImageRes, error) {
 	v.Image = i.Image
 	return i.c.Variation(ctx, v)
 }
 
-// VariationParams hold the data needed for image variation.
-type VariationParams struct {
+// VariationReq hold the data needed for image variation.
+type VariationReq struct {
 	Image          []byte  `json:"image,omitempty"`
 	N              *int    `json:"n,omitempty"`
 	Size           *string `json:"size,omitempty"`

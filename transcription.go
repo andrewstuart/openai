@@ -20,7 +20,7 @@ const (
 
 // Transcription returns a Transcription of an image. Convenience methods exist on
 // images already returned from Client calls to easily vary those images.
-func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*TranscriptionRes, error) {
+func (c Client) Transcription(ctx context.Context, v TranscriptionReq) (*TranscriptionRes, error) {
 	body := &bytes.Buffer{}
 	w := multipart.NewWriter(body)
 	image, err := w.CreateFormFile("file", "file.mp3")
@@ -78,8 +78,8 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionParams) (*Tran
 	return &res, nil
 }
 
-// TranscriptionParams hold the data needed for image variation.
-type TranscriptionParams struct {
+// TranscriptionReq hold the data needed for image variation.
+type TranscriptionReq struct {
 	File           []byte
 	Model          string
 	Prompt         *string

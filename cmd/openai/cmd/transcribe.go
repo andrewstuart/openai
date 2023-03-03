@@ -20,7 +20,7 @@ var transcribeCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		res, err := c.Transcription(ctx, openai.TranscriptionParams{
+		res, err := c.Transcription(ctx, openai.TranscriptionReq{
 			File:  bs,
 			Model: openai.TranscriptionModelWhisper1,
 		})

@@ -32,7 +32,7 @@ var variationCmd = &cobra.Command{
 					return fmt.Errorf("error reading file %s: %w", file, err)
 				}
 
-				res, err := c.Variation(ctx, openai.VariationParams{
+				res, err := c.Variation(ctx, openai.VariationReq{
 					Image:          bs,
 					ResponseFormat: p.T(openai.ImageResponseFormatB64JSON),
 				})
