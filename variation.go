@@ -66,9 +66,9 @@ func (c Client) Variation(ctx context.Context, v VariationParams) (*ImageRes, er
 }
 
 // Create a variation on an image already returned.
-func (c Images) Variation(ctx context.Context, v VariationParams) (*ImageRes, error) {
-	v.Image = c.Image
-	return c.Variation(ctx, v)
+func (i Images) Variation(ctx context.Context, v VariationParams) (*ImageRes, error) {
+	v.Image = i.Image
+	return i.c.Variation(ctx, v)
 }
 
 // VariationParams hold the data needed for image variation.
