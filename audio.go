@@ -21,6 +21,16 @@ const (
 // Transcription returns a Transcription of an image. Convenience methods exist on
 // images already returned from Client calls to easily vary those images.
 func (c Client) Transcription(ctx context.Context, v TranscriptionReq) (*TranscriptionRes, error) {
+	return c.audio(ctx, v, "transcriptions")
+}
+
+// Translation uses the OpenAI Translation endpoints to translate audio to english.
+// When using this endpoint, the Language parameter of the Req struct is always ignored.
+func (c Client) Translation(ctx context.Context, v TranscriptionReq) (*TranscriptionRes, error) {
+	return c.audio(ctx, v, "translations")
+}
+
+func (c Client) audio(ctx context.Context, v TranscriptionReq, endpoint string) (*TranscriptionRes, error) {
 	body := &bytes.Buffer{}
 	w := multipart.NewWriter(body)
 	image, err := w.CreateFormFile("file", "file.mp3")
@@ -56,7 +66,7 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionReq) (*Transcr
 		}
 		fmt.Fprint(n, *v.ResponseFormat)
 	}
-	if v.Language != nil {
+	if v.Language != nil && endpoint == "transcription" {
 		n, err := w.CreateFormField("language")
 		if err != nil {
 			return nil, fmt.Errorf("error creating audio multipart writer Language: %w", err)
@@ -67,7 +77,7 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionReq) (*Transcr
 
 	var res TranscriptionRes
 	err = c.c.R().
-		Post("audio/transcriptions").
+		Post("audio/%s", endpoint).
 		SetHeader("Content-Type", "multipart/form-data; boundary="+w.Boundary()).
 		WithBody(body).
 		Do(ctx).
