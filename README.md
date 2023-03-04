@@ -46,6 +46,7 @@ Current support:
 - [x] Image variations
 - [x] Audio transcription
 - [x] Upload/manage Files (for fine tuning)
+  - [ ] Convenience methods for jsonlines
 - [ ] Fine tune models
 - [ ] Moderations (check for OpenAI content policy violations)
 - [ ] More soon
