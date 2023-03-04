@@ -45,7 +45,7 @@ Current support:
 - [x] Images
 - [x] Image variations
 - [x] Audio transcription
-- [ ] Upload/manage Files (for fine tuning)
+- [x] Upload/manage Files (for fine tuning)
 - [ ] Fine tune models
 - [ ] Moderations (check for OpenAI content policy violations)
 - [ ] More soon
