@@ -16,25 +16,26 @@ import (
 var uploadCmd = &cobra.Command{
 	Use:   "upload",
 	Short: "Upload a file to openai",
-	Args:  cobra.ExactArgs(1),
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fn := args[0]
-		f, err := os.OpenFile(fn, os.O_RDONLY, 0400)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
+		for _, fn := range args {
+			f, err := os.OpenFile(fn, os.O_RDONLY, 0400)
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer f.Close()
 
-		res, err := c.Upload(ctx, openai.FileUploadReq{
-			Filename: fn,
-			File:     f,
-			Purpose:  openai.PurposeFineTune,
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
+			res, err := c.Upload(ctx, openai.FileUploadReq{
+				Filename: fn,
+				File:     f,
+				Purpose:  openai.PurposeFineTune,
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		fmt.Println(res.ID)
+			fmt.Println(fn + ":" + res.ID)
+		}
 	},
 }
 
