@@ -48,5 +48,5 @@ Current support:
 - [x] Upload/manage Files (for fine tuning)
   - [ ] Convenience methods for jsonlines
 - [ ] Fine tune models
-- [ ] Moderations (check for OpenAI content policy violations)
+- [x] Moderations (check for OpenAI content policy violations)
 - [ ] More soon
