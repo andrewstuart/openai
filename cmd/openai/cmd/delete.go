@@ -13,8 +13,9 @@ import (
 
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete a file",
+	Use:               "delete",
+	Short:             "Delete a file",
+	ValidArgsFunction: validFiles,
 	Run: func(cmd *cobra.Command, args []string) {
 		var out bool
 		err := survey.AskOne(&survey.Confirm{
