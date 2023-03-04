@@ -27,6 +27,7 @@ func (c Client) Transcription(ctx context.Context, v TranscriptionReq) (*Transcr
 // Translation uses the OpenAI Translation endpoints to translate audio to english.
 // When using this endpoint, the Language parameter of the Req struct is always ignored.
 func (c Client) Translation(ctx context.Context, v TranscriptionReq) (*TranscriptionRes, error) {
+	v.Language = nil
 	return c.audio(ctx, v, "translations")
 }
 
@@ -66,7 +67,7 @@ func (c Client) audio(ctx context.Context, v TranscriptionReq, endpoint string) 
 		}
 		fmt.Fprint(n, *v.ResponseFormat)
 	}
-	if v.Language != nil && endpoint == "transcription" {
+	if v.Language != nil {
 		n, err := w.CreateFormField("language")
 		if err != nil {
 			return nil, fmt.Errorf("error creating audio multipart writer Language: %w", err)
