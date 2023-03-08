@@ -20,6 +20,8 @@ var completeCmd = &cobra.Command{
 		n, _ := cmd.Flags().GetInt("number")
 		t, _ := cmd.Flags().GetInt("tokens")
 		f, _ := cmd.Flags().GetString("file")
+		p, _ := cmd.Flags().GetString("prefix")
+		s, _ := cmd.Flags().GetString("suffix")
 		// Read a complete line from either stdin or an entire file from `--file/-f`.
 		var comp string
 		if f != "" && f != "-" {
@@ -40,7 +42,7 @@ var completeCmd = &cobra.Command{
 
 		res, err := c.Complete(ctx, openai.CompleteReq{
 			Model:     model,
-			Prompt:    comp,
+			Prompt:    p + comp + s,
 			N:         &n,
 			MaxTokens: &t,
 		})
@@ -65,4 +67,6 @@ func init() {
 	completeCmd.Flags().IntP("number", "n", 1, "How many completions to generate")
 	completeCmd.Flags().IntP("tokens", "t", 64, "How many completions to generate")
 	completeCmd.Flags().StringP("file", "f", "", "Optional file to load")
+	completeCmd.Flags().StringP("prefix", "p", "", "Prefix to prepend (for files/stdin, mostly)")
+	completeCmd.Flags().StringP("suffix", "s", "", "Suffix to append (for files/stdin, mostly)")
 }
