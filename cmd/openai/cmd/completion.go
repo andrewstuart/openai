@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -23,18 +22,18 @@ var completeCmd = &cobra.Command{
 		f, _ := cmd.Flags().GetString("file")
 		// Read a complete line from either stdin or an entire file from `--file/-f`.
 		var comp string
-		if f != "" {
+		if f != "" && f != "-" {
 			bs, err := ioutil.ReadFile(f)
 			if err != nil {
 				log.Fatal(err)
 			}
 			comp = string(bs)
-		} else if len(args) == 0 {
-			inLine, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		} else if f == "-" || (len(args) == 1 && args[0] == "-") || len(args) == 0 {
+			bs, err := ioutil.ReadAll(os.Stdin)
 			if err != nil {
 				log.Fatal(err)
 			}
-			comp = inLine
+			comp = string(bs)
 		} else {
 			comp = strings.Join(args, " ")
 		}
@@ -65,5 +64,5 @@ func init() {
 	completeCmd.Flags().StringP("model", "m", openai.CompletionModelDavinci3, "Which completion model to use")
 	completeCmd.Flags().IntP("number", "n", 1, "How many completions to generate")
 	completeCmd.Flags().IntP("tokens", "t", 64, "How many completions to generate")
-	completeCmd.Flags().StringP("file", "f", "", "Opteal file to load")
+	completeCmd.Flags().StringP("file", "f", "", "Optional file to load")
 }

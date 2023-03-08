@@ -62,6 +62,5 @@ var imageCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(imageCmd)
 	imageCmd.Flags().StringP("file", "f", "out.jpg", "Filename to write the output to")
-	imageCmd.Flags().IntP("number", "n", 1, "Filename to write the output to")
-
+	imageCmd.Flags().IntP("number", "n", 1, "The number of images to generate")
 }
