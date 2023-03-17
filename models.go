@@ -17,12 +17,14 @@ func (ml ModelList) Has(s string) bool {
 // but with some convenience methods on a slice type.
 // https://platform.openai.com/docs/api-reference/models
 func (c *Client) Models(ctx context.Context) (ModelList, error) {
-	var res []ModelsRes
+	var res struct {
+		Data []ModelsRes
+	}
 	err := c.c.R().Get("models").Do(ctx).JSON(&res)
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	return res.Data, nil
 }
 
 type ModelsRes struct {
