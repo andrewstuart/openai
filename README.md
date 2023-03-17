@@ -53,4 +53,5 @@ Current support:
   - [ ] Convenience methods for jsonlines
 - [ ] Fine tune models
 - [x] Moderations (check for OpenAI content policy violations)
+- [x] List models
 - [ ] More soon
