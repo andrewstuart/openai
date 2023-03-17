@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/andrewstuart/openai"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +17,6 @@ var chatCmd = &cobra.Command{
 	Use:   "chat",
 	Short: "Chat with somebody",
 	Run: func(cmd *cobra.Command, args []string) {
-
 		prompt := "You are a helpful AI assistant."
 		fn := "Assistant"
 
@@ -32,6 +32,8 @@ var chatCmd = &cobra.Command{
 		}
 
 		sess := c.NewChatSession(prompt)
+		m, _ := cmd.Flags().GetString("model")
+		sess.Model = m
 
 		go func() {
 			<-ctx.Done()
@@ -71,4 +73,8 @@ func init() {
 	rootCmd.AddCommand(chatCmd)
 	chatCmd.Flags().StringP("prompt", "p", "", "A prompt to override the default")
 	chatCmd.Flags().String("personality", "", "Shorthand for a personality to use as the speaking style for the prompt.")
+	chatCmd.Flags().String("model", openai.ChatModelGPT35Turbo0301, "The model to use for chat completion")
+	chatCmd.RegisterFlagCompletionFunc("model", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{openai.ChatModelGPT35Turbo, openai.ChatModelGPT35Turbo0301, openai.ChatModelGPT4}, 0
+	})
 }

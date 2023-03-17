@@ -6,11 +6,16 @@ import (
 
 // Well-known Chat constants
 const (
-	ChatRoleSystem          = "system"
-	ChatRoleAssistant       = "assistant"
-	ChatRoleUser            = "user"
+	ChatRoleSystem    = "system"
+	ChatRoleAssistant = "assistant"
+	ChatRoleUser      = "user"
+
 	ChatModelGPT35Turbo     = "gpt-3.5-turbo"
 	ChatModelGPT35Turbo0301 = "gpt-3.5-turbo-0301"
+	ChatModelGPT4           = "gpt-4"
+	ChatModelGPT40314       = "gpt-4-0314"
+	ChatModelGPT432K        = "gpt-4-32k"
+	ChatModelGPT432K0314    = "gpt-4-32k-0314"
 )
 
 // ChatComplete is the raw chat/completions endpoint exposed for callers.
