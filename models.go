@@ -2,8 +2,10 @@ package openai
 
 import "context"
 
+// ModelList is a simple convenience abstraction over a slice of ModelsRes.
 type ModelList []ModelsRes
 
+// Has returns whether or not the model ID is present in the list.
 func (ml ModelList) Has(s string) bool {
 	for _, m := range ml {
 		if m.ID == s {
@@ -27,6 +29,8 @@ func (c *Client) Models(ctx context.Context) (ModelList, error) {
 	return res.Data, nil
 }
 
+// ModelsRes returns the models currently available to the user, per the models
+// API on OpenAI.
 type ModelsRes struct {
 	Created     int          `json:"created"`
 	ID          string       `json:"id"`
@@ -37,6 +41,7 @@ type ModelsRes struct {
 	Root        string       `json:"root"`
 }
 
+// Permissions are the return response from OpenAI
 type Permission struct {
 	AllowCreateEngine  bool    `json:"allow_create_engine"`
 	AllowFineTuning    bool    `json:"allow_fine_tuning"`
