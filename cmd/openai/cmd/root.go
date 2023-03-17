@@ -45,6 +45,4 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
