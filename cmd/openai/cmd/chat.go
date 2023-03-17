@@ -20,6 +20,7 @@ var chatCmd = &cobra.Command{
 	Use:   "chat",
 	Short: "Chat with somebody",
 	RunE: func(cmd *cobra.Command, args []string) error {
+
 		prompt := "You are a helpful AI assistant."
 		fn := "Assistant"
 		p := viper.GetString("history.path")
@@ -50,7 +51,15 @@ var chatCmd = &cobra.Command{
 
 		sess := c.NewChatSession(prompt)
 		m, _ := cmd.Flags().GetString("model")
-		sess.Model = m
+		models, err := c.Models(ctx)
+		if err != nil {
+			return err
+		}
+		if models.Has(m) {
+			sess.Model = m
+		} else {
+			sess.Model = openai.ChatModelGPT35Turbo0301
+		}
 
 		go func() {
 			<-ctx.Done()
@@ -97,6 +106,17 @@ func init() {
 	chatCmd.Flags().String("personality", "", "Shorthand for a personality to use as the speaking style for the prompt.")
 	chatCmd.Flags().String("model", openai.ChatModelGPT4, "The model to use for chat completion")
 	chatCmd.RegisterFlagCompletionFunc("model", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		return []string{openai.ChatModelGPT35Turbo, openai.ChatModelGPT35Turbo0301, openai.ChatModelGPT4}, 0
+		ourModels := []string{openai.ChatModelGPT35Turbo, openai.ChatModelGPT35Turbo0301}
+		ms, err := c.Models(ctx)
+		if err != nil {
+			return ourModels, 0
+		}
+		if ms.Has(openai.ChatModelGPT4) {
+			ourModels = append(ourModels, openai.ChatModelGPT4, openai.ChatModelGPT40314)
+		}
+		if ms.Has(openai.ChatModelGPT432K) {
+			ourModels = append(ourModels, openai.ChatModelGPT432K, openai.ChatModelGPT432K0314)
+		}
+		return ourModels, 0
 	})
 }
