@@ -1,24 +1,41 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
-	"log"
+	"io"
 	"os"
+	"path"
 	"strings"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/andrewstuart/openai"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // chatCmd represents the chat command
 var chatCmd = &cobra.Command{
 	Use:   "chat",
 	Short: "Chat with somebody",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		prompt := "You are a helpful AI assistant."
 		fn := "Assistant"
+		p := viper.GetString("history.path")
+		var out io.Writer
+		if p != "" {
+			fp := path.Join(p, time.Now().Format(time.RFC3339))
+			var err error
+			outF, err := os.OpenFile(fp, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0600)
+			if err != nil {
+				return err
+			}
+			defer outF.Close()
+			bw := bufio.NewWriter(outF)
+			defer bw.Flush()
+			out = bw
+		}
 
 		personality, _ := cmd.Flags().GetString("personality")
 		if personality != "" {
@@ -53,18 +70,25 @@ var chatCmd = &cobra.Command{
 				is.Question.Text = ""
 			}))
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
-			res, err := sess.Stream(ctx, in)
-			if err != nil {
-				log.Fatal(err)
+			if out != nil {
+				fmt.Fprintf(out, "%s (%s): %s\n", "You", time.Now().Format(time.RFC3339), in)
 			}
 
+			res, err := sess.Stream(ctx, in)
+			if err != nil {
+				return err
+			}
+
+			outStr := ""
 			fmt.Print(fn + ": ")
 			for st := range res {
+				outStr += st
 				fmt.Print(st)
 			}
 			fmt.Println()
+			fmt.Fprintf(out, "%s (%s): %s\n", fn, time.Now().Format(time.RFC3339), outStr)
 		}
 	},
 }
