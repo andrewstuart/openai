@@ -1,6 +1,8 @@
 package openai
 
-import "context"
+import (
+	"context"
+)
 
 // Well-known Chat constants
 const (
@@ -13,6 +15,7 @@ const (
 
 // ChatComplete is the raw chat/completions endpoint exposed for callers.
 func (c Client) ChatComplete(ctx context.Context, r ChatReq) (*ChatRes, error) {
+	r.Stream = nil
 	var res ChatRes
 	err := c.c.R().Post("chat/completions").JSON(r).Do(ctx).JSON(&res)
 	if err != nil {
@@ -65,8 +68,17 @@ func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) 
 
 // ChatReq is a Request to the chat/completions endpoints.
 type ChatReq struct {
-	Model    string        `json:"model"`
-	Messages []ChatMessage `json:"messages"`
+	Model            string             `json:"model"`
+	Messages         []ChatMessage      `json:"messages"`
+	Temperature      *float64           `json:"temperature,omitempty"`
+	TopP             *int               `json:"top_p,omitempty"`
+	N                *int               `json:"n,omitempty"`
+	Stream           *bool              `json:"stream,omitempty"`
+	MaxTokens        *int               `json:"max_tokens,omitempty"`
+	PresencePenalty  *float64           `json:"presence_penalty,omitempty"`
+	FrequencyPenalty *float64           `json:"frequency_penalty,omitempty"`
+	LogitBias        map[string]float64 `json:"logit_bias,omitempty"`
+	User             *string            `json:"user,omitempty"`
 }
 
 // ChatMessage is the structure of the messages array in the request body.

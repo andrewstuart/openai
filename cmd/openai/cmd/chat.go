@@ -49,13 +49,16 @@ var chatCmd = &cobra.Command{
 			if err != nil {
 				log.Fatal(err)
 			}
-			res, err := sess.Complete(ctx, msg)
+			res, err := sess.Stream(ctx, msg)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			fmt.Println(fn+":", strings.TrimSpace(res))
-
+			fmt.Print(fn + ": ")
+			for st := range res {
+				fmt.Print(st)
+			}
+			fmt.Println()
 		}
 	},
 }
