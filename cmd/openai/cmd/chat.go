@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 	"time"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +33,6 @@ var chatCmd = &cobra.Command{
 
 		sess := c.NewChatSession(prompt)
 
-		r := bufio.NewReader(os.Stdin)
 		go func() {
 			<-ctx.Done()
 			os.Stdin.SetDeadline(time.Now())
@@ -44,12 +43,17 @@ var chatCmd = &cobra.Command{
 			case <-ctx.Done():
 			default:
 			}
-			fmt.Print("You: ")
-			msg, err := r.ReadString('\n')
+
+			var in string
+			err := survey.AskOne(&survey.Input{
+				Message: "You: ",
+			}, &in, survey.WithIcons(func(is *survey.IconSet) {
+				is.Question.Text = ""
+			}))
 			if err != nil {
 				log.Fatal(err)
 			}
-			res, err := sess.Stream(ctx, msg)
+			res, err := sess.Stream(ctx, in)
 			if err != nil {
 				log.Fatal(err)
 			}
