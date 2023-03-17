@@ -66,9 +66,7 @@ var chatCmd = &cobra.Command{
 			var in string
 			err := survey.AskOne(&survey.Input{
 				Message: "You: ",
-			}, &in, survey.WithIcons(func(is *survey.IconSet) {
-				is.Question.Text = ""
-			}))
+			}, &in, survey.WithIcons(func(is *survey.IconSet) { is.Question.Text = "" }))
 			if err != nil {
 				return err
 			}
@@ -97,7 +95,7 @@ func init() {
 	rootCmd.AddCommand(chatCmd)
 	chatCmd.Flags().StringP("prompt", "p", "", "A prompt to override the default")
 	chatCmd.Flags().String("personality", "", "Shorthand for a personality to use as the speaking style for the prompt.")
-	chatCmd.Flags().String("model", openai.ChatModelGPT35Turbo0301, "The model to use for chat completion")
+	chatCmd.Flags().String("model", openai.ChatModelGPT4, "The model to use for chat completion")
 	chatCmd.RegisterFlagCompletionFunc("model", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{openai.ChatModelGPT35Turbo, openai.ChatModelGPT35Turbo0301, openai.ChatModelGPT4}, 0
 	})
