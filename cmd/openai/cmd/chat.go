@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"bufio"
+	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"path"
 	"strings"
@@ -11,8 +10,10 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/andrewstuart/openai"
+	"github.com/cenkalti/backoff"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"golang.org/x/exp/maps"
 )
 
 // chatCmd represents the chat command
@@ -24,18 +25,16 @@ var chatCmd = &cobra.Command{
 		prompt := "You are a helpful AI assistant."
 		fn := "Assistant"
 		p := viper.GetString("history.path")
-		var out io.Writer
+		var out *os.File
+
 		if p != "" {
-			fp := path.Join(p, time.Now().Format(time.RFC3339))
+			fp := path.Join(p, time.Now().Format(time.RFC3339)) + ".json"
 			var err error
-			outF, err := os.OpenFile(fp, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0600)
+			out, err = os.OpenFile(fp, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0600)
 			if err != nil {
 				return err
 			}
-			defer outF.Close()
-			bw := bufio.NewWriter(outF)
-			defer bw.Flush()
-			out = bw
+			defer out.Close()
 		}
 
 		personality, _ := cmd.Flags().GetString("personality")
@@ -47,6 +46,11 @@ var chatCmd = &cobra.Command{
 		if pr, _ := cmd.Flags().GetString("prompt"); pr != "" {
 			prompt = pr
 			fn = "Response"
+		}
+
+		prompts := viper.GetStringMapString("prompts")
+		if prompts != nil && prompts[prompt] != "" {
+			prompt = prompts[prompt]
 		}
 
 		sess := c.NewChatSession(prompt)
@@ -79,11 +83,15 @@ var chatCmd = &cobra.Command{
 			if err != nil {
 				return err
 			}
-			if out != nil {
-				fmt.Fprintf(out, "%s (%s): %s\n", "You", time.Now().Format(time.RFC3339), in)
-			}
 
-			res, err := sess.Stream(ctx, in)
+			bo := backoff.NewExponentialBackOff()
+			bo.InitialInterval = time.Second
+			var res <-chan string
+			err = backoff.Retry(func() error {
+				var err error
+				res, err = sess.Stream(ctx, in)
+				return err
+			}, backoff.WithMaxRetries(backoff.WithContext(bo, ctx), 5))
 			if err != nil {
 				return err
 			}
@@ -95,7 +103,10 @@ var chatCmd = &cobra.Command{
 				fmt.Print(st)
 			}
 			fmt.Println()
-			fmt.Fprintf(out, "%s (%s): %s\n", fn, time.Now().Format(time.RFC3339), outStr)
+			if out != nil {
+				out.Seek(0, 0)
+				json.NewEncoder(out).Encode(sess)
+			}
 		}
 	},
 }
@@ -105,6 +116,7 @@ func init() {
 	chatCmd.Flags().StringP("prompt", "p", "", "A prompt to override the default")
 	chatCmd.Flags().String("personality", "", "Shorthand for a personality to use as the speaking style for the prompt.")
 	chatCmd.Flags().String("model", openai.ChatModelGPT4, "The model to use for chat completion")
+	// chatCmd.Flags().String("resume", "", "Resume a chat from file") TODO: add resume
 	chatCmd.RegisterFlagCompletionFunc("model", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		ourModels := []string{openai.ChatModelGPT35Turbo, openai.ChatModelGPT35Turbo0301}
 		ms, err := c.Models(ctx)
@@ -119,4 +131,13 @@ func init() {
 		}
 		return ourModels, 0
 	})
+	chatCmd.RegisterFlagCompletionFunc("prompt", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		m := viper.GetStringMapString("prompts")
+		if m != nil {
+			return maps.Keys(m), 0
+		}
+
+		return []string{}, cobra.ShellCompDirectiveDefault
+	})
+
 }
