@@ -15,8 +15,9 @@ type Client struct {
 }
 
 type optStruct struct {
-	Org     string
-	BaseURL string
+	Org        string
+	BaseURL    string
+	APIVersion string
 }
 
 type Opt func(*optStruct)
@@ -36,6 +37,15 @@ func WithBaseURL(base string) Opt {
 	}
 }
 
+// WithAPIVersion sets the API Version header of the API service to use. This
+// can be used for alternative hosted versions of the OpenAI API, like MS
+// Azure.
+func WithAPIVersion(base string) Opt {
+	return func(opt *optStruct) {
+		opt.APIVersion = base
+	}
+}
+
 // NewClient returns an OpenAI base client with the token.
 func NewClient(tok string, opts ...Opt) (*Client, error) {
 	var os optStruct
@@ -50,6 +60,9 @@ func NewClient(tok string, opts ...Opt) (*Client, error) {
 
 	if os.Org != "" {
 		dh["OpenAI-Organization"] = []string{os.Org}
+	}
+	if os.APIVersion != "" {
+		dh["OpenAI-Version"] = []string{os.APIVersion}
 	}
 
 	base := os.BaseURL
