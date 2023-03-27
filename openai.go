@@ -6,6 +6,8 @@ import (
 	"git.stuart.fun/andrew/rester/v2"
 )
 
+const defaultBase = "https://api.openai.com/v1"
+
 // Client holds the base rester.Client and has methods for communicating with
 // OpenAI.
 type Client struct {
@@ -13,14 +15,24 @@ type Client struct {
 }
 
 type optStruct struct {
-	Org string
+	Org     string
+	BaseURL string
 }
 
 type Opt func(*optStruct)
 
+// Withorg sets the identifier for a specific org, for the case where a user may be part of more than one organization.
 func WithOrg(o string) Opt {
 	return func(opt *optStruct) {
 		opt.Org = o
+	}
+}
+
+// WithBaseURL sets the base URL of the API service to use. This can be used
+// for alternative hosted versions of the OpenAI API, like MS Azure.
+func WithBaseURL(base string) Opt {
+	return func(opt *optStruct) {
+		opt.BaseURL = base
 	}
 }
 
@@ -40,7 +52,12 @@ func NewClient(tok string, opts ...Opt) (*Client, error) {
 		dh["OpenAI-Organization"] = []string{os.Org}
 	}
 
-	c := rester.Must(rester.New("https://api.openai.com/v1"))
+	base := os.BaseURL
+	if base == "" {
+		base = defaultBase
+	}
+
+	c := rester.Must(rester.New(base))
 	c.Transport = rester.All{
 		dh,
 		rester.ResponseFunc(parseOpenAIError),

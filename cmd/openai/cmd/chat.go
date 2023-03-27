@@ -84,12 +84,19 @@ var chatCmd = &cobra.Command{
 				return err
 			}
 
+			if in == "" {
+				return nil
+			}
+
 			bo := backoff.NewExponentialBackOff()
 			bo.InitialInterval = time.Second
 			var res <-chan string
 			err = backoff.Retry(func() error {
 				var err error
 				res, err = sess.Stream(ctx, in)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+				}
 				return err
 			}, backoff.WithMaxRetries(backoff.WithContext(bo, ctx), 5))
 			if err != nil {
