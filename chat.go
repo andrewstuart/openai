@@ -36,6 +36,7 @@ type ChatSession struct {
 	c        *Client
 	Messages []ChatMessage
 	Model    string
+	Tpl      ChatReq
 }
 
 // NewChatSession returns a ChatSession object with the given prompt as a
@@ -59,10 +60,11 @@ func (s *ChatSession) Complete(ctx context.Context, msg string) (string, error) 
 		Content: msg,
 	})
 
-	res, err := s.c.ChatComplete(ctx, ChatReq{
-		Model:    s.Model,
-		Messages: s.Messages,
-	})
+	req := s.Tpl
+	req.Messages = s.Messages
+	req.Model = s.Model
+
+	res, err := s.c.ChatComplete(ctx, req)
 	if err != nil {
 		return "", err
 	}
