@@ -74,6 +74,7 @@ func (i Images) Variation(ctx context.Context, v VariationReq) (*ImageRes, error
 // VariationReq hold the data needed for image variation.
 type VariationReq struct {
 	Image          []byte  `json:"image,omitempty"`
+	Model          string  `json:"model,omitempty"`
 	N              *int    `json:"n,omitempty"`
 	Size           *string `json:"size,omitempty"`
 	ResponseFormat *string `json:"response_format,omitempty"`
