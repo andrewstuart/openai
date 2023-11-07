@@ -14,6 +14,7 @@ const (
 	ChatModelGPT35Turbo0301   = "gpt-3.5-turbo-0301"
 	ChatModelGPT35Turbo16K    = "gpt-3.5-turbo-16k"
 	ChatModelGPT35Turbo0613   = "gpt-3.5-turbo-0613"
+	ChatModelGPT35Turbo1106   = "gpt-3.5-turbo-1106"
 	ChatModelGPT4             = "gpt-4"
 	ChatModelGPT40314         = "gpt-4-0314"
 	ChatModelGPT40613         = "gpt-4-0613"
