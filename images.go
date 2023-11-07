@@ -10,6 +10,9 @@ const (
 	ImageSize256  = "256x256"
 	ImageSize512  = "512x512"
 	ImageSize1024 = "1024x1024"
+
+	ImageModelDallE2 = "dall-e-2"
+	ImageModelDallE3 = "dall-e-3"
 )
 
 // GenerateImage calls the images/generations API and returns the API response
@@ -29,6 +32,7 @@ func (c *Client) GenerateImage(ctx context.Context, p ImgReq) (*ImageRes, error)
 // ImgReq is the input type for image generation.
 type ImgReq struct {
 	Prompt         string  `json:"prompt,omitempty"`
+	Model          string  `json:"model,omitempty"`
 	N              *int    `json:"n,omitempty"`
 	Size           *string `json:"size,omitempty"`
 	ResponseFormat *string `json:"response_format,omitempty"`
