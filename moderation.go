@@ -5,6 +5,7 @@ import "context"
 const (
 	ModerationModelStable = "text-moderation-stable"
 	ModerationModelLatest = "text-moderation-latest"
+	ModerationModel007    = "text-moderation-007"
 )
 
 // ModerationReq details a request for moderation to the OpenAI endpoint.
