@@ -42,6 +42,7 @@ type ImgReq struct {
 	Size           *string `json:"size,omitempty"`
 	ResponseFormat *string `json:"response_format,omitempty"`
 	User           *string `json:"user,omitempty"`
+	Quality        *string `json:"quality,omitempty"`
 }
 
 // ImageRes is returned by the Image generation.
