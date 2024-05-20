@@ -7,9 +7,14 @@ const (
 	ImageResponseFormatURL     = "url"
 	ImageResponseFormatB64JSON = "b64_json"
 
-	ImageSize256  = "256x256"
-	ImageSize512  = "512x512"
-	ImageSize1024 = "1024x1024"
+	ImageSize256       = "256x256"
+	ImageSize512       = "512x512"
+	ImageSize1024      = "1024x1024"
+	ImageSize1024x1792 = "1024x1792"
+	ImageSize1792x1024 = "1792x1024"
+
+	ImageQualityStandard = "standard"
+	ImageQualityHD       = "hd"
 
 	ImageModelDallE2 = "dall-e-2"
 	ImageModelDallE3 = "dall-e-3"
